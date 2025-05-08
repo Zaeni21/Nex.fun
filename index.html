@@ -39,9 +39,16 @@
           Deploy Token
         </button>
       </form>
+
+      <!-- Buy Token Button -->
+      <button onclick="buyToken()" class="bg-white text-black font-bold py-2 px-6 rounded hover:bg-gray-200 mt-6">
+        Buy Token
+      </button>
+
       <div id="txResult" class="text-green-400 mt-4 text-center"></div>
     </div>
 
+    <!-- Script Section -->
     <script>
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const nexusChain = {
@@ -110,6 +117,32 @@
         await contract.deployTransaction.wait();
         document.getElementById('txResult').innerText = `Token deployed at: ${contract.address}`;
       });
+
+      async function buyToken() {
+        const saleAddress = "0xcCd1642e6891b21380997604CaAa2f55774E2734";
+        const saleABI = [
+          {
+            "inputs": [],
+            "name": "buyTokens",
+            "outputs": [],
+            "stateMutability": "payable",
+            "type": "function"
+          }
+        ];
+        const signer = provider.getSigner();
+        const contract = new ethers.Contract(saleAddress, saleABI, signer);
+        const input = prompt("Enter how many NEX you want to spend (e.g. 1):");
+        if (!input || isNaN(input)) return;
+
+        try {
+          const tx = await contract.buyTokens({ value: ethers.utils.parseEther(input) });
+          await tx.wait();
+          document.getElementById("txResult").innerText = "Token purchased successfully!";
+        } catch (err) {
+          console.error(err);
+          alert("Transaction failed: " + err.message);
+        }
+      }
     </script>
   </body>
 </html>
