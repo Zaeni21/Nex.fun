@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nex.fun - Token Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  </head>
+  <body class="bg-black text-white min-h-screen flex items-center justify-center">
+    <div class="max-w-xl w-full p-6 text-center space-y-6">
+      <h1 class="text-3xl font-bold">Pump Clone</h1>
+      <p class="text-gray-400">Create your meme token in seconds.</p>
+
+      <form id="tokenForm" class="space-y-4">
+        <input type="text" placeholder="Token Name" id="name" class="w-full p-2 rounded bg-gray-800 border border-gray-600" />
+        <input type="text" placeholder="Symbol (e.g. JWR)" id="symbol" class="w-full p-2 rounded bg-gray-800 border border-gray-600" />
+        <input type="number" placeholder="Total Supply" id="supply" class="w-full p-2 rounded bg-gray-800 border border-gray-600" />
+        <button type="submit" class="bg-green-500 hover:bg-green-600 text-black font-bold py-2 px-4 rounded w-full">
+          Deploy Token
+        </button>
+      </form>
+
+      <div id="preview" class="text-left hidden">
+        <h2 class="text-xl font-bold mt-4">Token Preview:</h2>
+        <p><strong>Name:</strong> <span id="prevName"></span></p>
+        <p><strong>Symbol:</strong> <span id="prevSymbol"></span></p>
+        <p><strong>Supply:</strong> <span id="prevSupply"></span></p>
+      </div>
+    </div>
+
+    <script>
+      document.getElementById('tokenForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const name = document.getElementById('name').value;
+        const symbol = document.getElementById('symbol').value;
+        const supply = document.getElementById('supply').value;
+
+        document.getElementById('prevName').innerText = name;
+        document.getElementById('prevSymbol').innerText = symbol;
+        document.getElementById('prevSupply').innerText = supply;
+        document.getElementById('preview').classList.remove('hidden');
+
+        // Nanti bisa tambahin AI deploy atau smart contract call di sini
+      });
+    </script>
+  </body>
+</html>
