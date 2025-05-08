@@ -3,44 +3,86 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nex.fun - Token Generator</title>
+    <title>Nex.fun - Meme Token Generator</title>
+    <meta name="description" content="Nex.fun lets you deploy meme tokens instantly on-chain. Built on Nexus Network." />
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
   </head>
-  <body class="bg-black text-white min-h-screen flex items-center justify-center">
-    <div class="max-w-xl w-full p-6 text-center space-y-6">
-      <h1 class="text-3xl font-bold">Nex.fun</h1>
-      <p class="text-gray-400">Create your meme token in seconds.</p>
+  <body class="bg-black text-white min-h-screen font-sans">
+    <!-- Header -->
+    <div class="flex items-center justify-between px-4 py-4">
+      <div class="text-xl font-light tracking-wide">NEXUS <span class="text-gray-400">Devnet</span></div>
+      <div id="walletAddress" class="flex items-center space-x-2 bg-gray-900 px-3 py-1 rounded-full cursor-pointer">
+        <div class="w-4 h-4 bg-blue-500 rounded-full"></div>
+        <span class="text-sm">Connect Wallet</span>
+      </div>
+    </div>
 
-      <form id="tokenForm" class="space-y-4">
-        <input type="text" placeholder="Token Name" id="name" class="w-full p-2 rounded bg-gray-800 border border-gray-600" />
-        <input type="text" placeholder="Symbol (e.g. NEX)" id="symbol" class="w-full p-2 rounded bg-gray-800 border border-gray-600" />
-        <input type="number" placeholder="Total Supply" id="supply" class="w-full p-2 rounded bg-gray-800 border border-gray-600" />
+    <!-- Form Section -->
+    <div class="flex flex-col items-center justify-center px-6 pt-20">
+      <h1 class="text-2xl font-semibold">Nex.fun</h1>
+      <p class="text-gray-400 text-sm mb-6 text-center max-w-md">
+        Launch your meme token instantly on-chain. No code, no stress — just fun. Powered by EVM. Built on <span class="text-white font-bold">Nexus Network</span>.
+      </p>
+      <form id="deployForm" class="space-y-4 w-full max-w-sm">
+        <input type="text" id="tokenName" placeholder="Token Name" class="w-full p-2 rounded bg-gray-800 border border-gray-700" />
+        <input type="text" id="tokenSymbol" placeholder="Symbol (e.g. JWR)" class="w-full p-2 rounded bg-gray-800 border border-gray-700" />
+        <input type="number" id="tokenSupply" placeholder="Total Supply" class="w-full p-2 rounded bg-gray-800 border border-gray-700" />
         <button type="submit" class="bg-green-500 hover:bg-green-600 text-black font-bold py-2 px-4 rounded w-full">
           Deploy Token
         </button>
       </form>
-
-      <div id="preview" class="text-left hidden">
-        <h2 class="text-xl font-bold mt-4">Token Preview:</h2>
-        <p><strong>Name:</strong> <span id="prevName"></span></p>
-        <p><strong>Symbol:</strong> <span id="prevSymbol"></span></p>
-        <p><strong>Supply:</strong> <span id="prevSupply"></span></p>
-      </div>
+      <div id="txResult" class="text-green-400 mt-4"></div>
     </div>
 
     <script>
-      document.getElementById('tokenForm').addEventListener('submit', function (e) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const nexusChain = {
+        chainId: '0x189', // 393 in hex
+        chainName: 'Nexus',
+        rpcUrls: ['https://rpc.nexus.xyz/http'],
+        nativeCurrency: { name: 'Nexus', symbol: 'NEX', decimals: 18 },
+        blockExplorerUrls: ['https://nexus-new.explorer.caldera.xyz']
+      };
+
+      async function switchToNexus() {
+        try {
+          await window.ethereum.request({ method: 'wallet_addEthereumChain', params: [nexusChain] });
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+      async function connectWallet() {
+        await provider.send("eth_requestAccounts", []);
+        const signer = provider.getSigner();
+        const address = await signer.getAddress();
+        document.getElementById('walletAddress').innerHTML = `<div class="w-4 h-4 bg-blue-500 rounded-full"></div><span class="text-sm">${address.slice(0, 5)}...${address.slice(-3)}</span>`;
+      }
+
+      document.getElementById('walletAddress').addEventListener('click', async () => {
+        await switchToNexus();
+        await connectWallet();
+      });
+
+      document.getElementById('deployForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-        const name = document.getElementById('name').value;
-        const symbol = document.getElementById('symbol').value;
-        const supply = document.getElementById('supply').value;
+        const name = document.getElementById('tokenName').value;
+        const symbol = document.getElementById('tokenSymbol').value;
+        const supply = document.getElementById('tokenSupply').value;
 
-        document.getElementById('prevName').innerText = name;
-        document.getElementById('prevSymbol').innerText = symbol;
-        document.getElementById('prevSupply').innerText = supply;
-        document.getElementById('preview').classList.remove('hidden');
+        const abi = [
+          "function name() view returns (string)",
+          "function symbol() view returns (string)",
+          "function totalSupply() view returns (uint256)",
+          "constructor(string memory name, string memory symbol, uint256 initialSupply)"
+        ];
+        const bytecode = "YOUR_COMPILED_BYTECODE_HERE";
 
-        // Nanti bisa tambahin AI deploy atau smart contract call di sini
+        const factory = new ethers.ContractFactory(abi, bytecode, provider.getSigner());
+        const contract = await factory.deploy(name, symbol, ethers.utils.parseUnits(supply, 18));
+        await contract.deployTransaction.wait();
+        document.getElementById('txResult').innerText = `Token deployed at: ${contract.address}`;
       });
     </script>
   </body>
