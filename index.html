@@ -11,7 +11,7 @@
   <body class="bg-black text-white min-h-screen font-sans">
     <!-- Header -->
     <div class="flex items-center justify-between px-4 py-4">
-      <div class="text-xl font-light tracking-wide">NEXUS <span class="text-gray-400">Devnet</span></div>
+      <div class="text-xl font-light tracking-wide">Nex.fun</div>
       <div id="walletAddress" class="flex items-center space-x-2 bg-gray-900 px-3 py-1 rounded-full cursor-pointer">
         <div class="w-4 h-4 bg-blue-500 rounded-full"></div>
         <span class="text-sm">Connect Wallet</span>
@@ -24,11 +24,11 @@
       <p class="text-gray-400 text-sm mb-6 text-center max-w-md">
         Launch your meme token instantly on-chain. No code, no stress — just fun. Powered by EVM. Built on <span class="text-white font-bold">Nexus Network</span>.
       </p>
-      <form id="deployForm" class="space-y-4 w-full max-w-sm">
+      <form id="deployForm" class="space-y-4 w-full max-w-sm flex flex-col items-center">
         <input type="text" id="tokenName" placeholder="Token Name" class="w-full p-2 rounded bg-gray-800 border border-gray-700" />
         <input type="text" id="tokenSymbol" placeholder="Symbol (e.g. JWR)" class="w-full p-2 rounded bg-gray-800 border border-gray-700" />
         <input type="number" id="tokenSupply" placeholder="Total Supply" class="w-full p-2 rounded bg-gray-800 border border-gray-700" />
-        <button type="submit" class="bg-green-500 hover:bg-green-600 text-black font-bold py-2 px-4 rounded w-full">
+        <button type="submit" class="bg-white text-black font-bold py-2 px-6 rounded hover:bg-gray-200">
           Deploy Token
         </button>
       </form>
@@ -38,7 +38,7 @@
     <script>
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const nexusChain = {
-        chainId: '0x189', // 393 in hex
+        chainId: '0x189',
         chainName: 'Nexus',
         rpcUrls: ['https://rpc.nexus.xyz/http'],
         nativeCurrency: { name: 'Nexus', symbol: 'NEX', decimals: 18 },
