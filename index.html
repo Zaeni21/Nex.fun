@@ -1,95 +1,87 @@
 <!DOCTYPE html>
+
 <html lang="en">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>
    Nex.fun - Meme Token Generator
   </title>
-  <meta content="Create your meme coin instantly on-chain. Powered by Nexus Network." name="description"/>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
-  <script>
-   function toggleSocialInputs() {
-  const section = document.getElementById('optionalSocials');
+<meta content="Create your meme coin instantly on-chain. Powered by Nexus Network." name="description"/>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<script>
+   function toggleLinks() {
+  const section = document.getElementById('socialLinks');
   section.classList.toggle('hidden');
 }
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js">
-  </script>
- </head>
- <body class="bg-black text-white min-h-screen font-sans">
-  <!-- Header -->
-  <div class="flex items-center justify-between px-4 py-4 relative">
-   <div class="text-xl font-light tracking-wide">
+<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js">
+</script>
+</head>
+<body class="bg-black text-white min-h-screen font-sans">
+<!-- Header -->
+<div class="flex items-center justify-between px-4 py-4 relative">
+<div class="text-xl font-light tracking-wide">
     Nex.fun
    </div>
-   <div class="relative">
-    <div class="flex items-center space-x-2 bg-gray-900 px-3 py-1 rounded-full cursor-pointer" id="walletAddress">
-     <div class="w-4 h-4 bg-blue-500 rounded-full">
-     </div>
-     <span class="text-sm">
+<div class="relative">
+<div class="flex items-center space-x-2 bg-gray-900 px-3 py-1 rounded-full cursor-pointer" id="walletAddress">
+<div class="w-4 h-4 bg-blue-500 rounded-full">
+</div>
+<span class="text-sm">
       Connect Wallet
      </span>
-    </div>
-    <div class="absolute right-0 mt-2 bg-gray-800 border border-gray-600 p-3 rounded hidden z-50" id="walletPopup">
-     <p class="text-green-400 text-sm mb-2">
+</div>
+<div class="absolute right-0 mt-2 bg-gray-800 border border-gray-600 p-3 rounded hidden z-50" id="walletPopup">
+<p class="text-green-400 text-sm mb-2">
       Connected
      </p>
-     <button class="bg-red-600 hover:bg-red-700 px-2 py-1 text-xs rounded" onclick="disconnectWallet()">
+<button class="bg-red-600 hover:bg-red-700 px-2 py-1 text-xs rounded" onclick="disconnectWallet()">
       Disconnect
      </button>
-    </div>
-   </div>
-  </div>
-  <!-- Create Coin Section -->
-  <div class="max-w-md mx-auto p-6">
-   <h2 class="text-xl font-bold mb-4">
+</div>
+</div>
+</div>
+<!-- Create Coin Section -->
+<div class="max-w-md mx-auto p-6">
+<h2 class="text-xl font-bold mb-4">
     Create New Coin
    </h2>
-   <form class="space-y-4" id="createCoinForm">
-    <input class="w-full p-3 rounded bg-gray-800 border border-gray-700" id="tokenName" placeholder="Coin Name" type="text"/>
-    <input class="w-full p-3 rounded bg-gray-800 border border-gray-700" id="tokenSymbol" placeholder="Ticker (e.g. NEX)" type="text"/>
-    <textarea class="w-full p-3 rounded bg-gray-800 border border-gray-700" id="tokenDesc" placeholder="Short Description (optional)"></textarea>
-   </form>
-   <button class="text-xs text-gray-400 mt-2 float-right" onclick="toggleSocialInputs()" type="button">
+<form class="space-y-4" id="createCoinForm">
+<input class="w-full p-3 rounded bg-gray-800 border border-gray-700" id="tokenName" placeholder="Coin Name" type="text"/>
+<input class="w-full p-3 rounded bg-gray-800 border border-gray-700" id="tokenSymbol" placeholder="Ticker (e.g. DOGE)" type="text"/>
+<textarea class="w-full p-3 rounded bg-gray-800 border border-gray-700" id="tokenDesc" placeholder="Short Description (optional)"></textarea>
+</form><div class="mb-4"><label class="block text-white mb-1 font-medium">Add social links <span class="text-gray-400 text-sm">(optional)</span><button class="text-gray-400 text-sm ml-1" onclick="toggleLinks()" type="button">⬇️</button></label><div id="socialLinks" style="display: none;"><input class="w-full p-2 mb-2 bg-gray-800 text-white rounded" placeholder="Website URL" type="url"/><input class="w-full p-2 mb-2 bg-gray-800 text-white rounded" placeholder="Twitter URL" type="url"/></div></div>
+<button class="text-xs text-gray-400 mt-2 float-right" onclick="toggleSocialInputs()" type="button">
     ⬇️ optional
    </button>
-   <div class="mt-2 hidden" id="optionalSocials">
-    <input class="w-full p-2 mb-2 rounded-md bg-gray-800 text-white" id="websiteUrl" placeholder="Website URL" type="url"/>
-    <input class="w-full p-2 mb-2 rounded-md bg-gray-800 text-white" id="twitterUrl" placeholder="Twitter URL" type="url"/>
-   </div>
-   <button class="w-full bg-white text-black font-bold py-3 rounded hover:bg-gray-200" type="submit">
+
+<button class="w-full bg-white text-black font-bold py-3 rounded hover:bg-gray-200" type="submit">
     Create Coin
    </button>
-   <!-- Social Links -->
-   <div class="mt-4 text-left">
-    <label class="block text-sm font-medium text-gray-300 mb-1">
-     Add social links (optional)
-    </label>
-    <input class="w-full p-2 rounded-md bg-gray-800 text-white mb-2" id="websiteUrl" placeholder="Website URL" type="url"/>
-    <input class="w-full p-2 rounded-md bg-gray-800 text-white" id="telegramUrl" placeholder="Telegram URL" type="url"/>
-   </div>
-   <!-- Bottom Navigation -->
-   <div class="fixed bottom-0 left-0 right-0 bg-black border-t border-gray-700 flex justify-around py-2 z-50">
-    <button class="text-white flex flex-col items-center text-sm" onclick="navigateHome()">
-     <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path d="M3 12l2-2m0 0l7-7 7 7M13 5v6h6v11H5V11h6V5z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-      </path>
-     </svg>
+<!-- Social Links -->
+
+<!-- Bottom Navigation -->
+<div class="fixed bottom-0 left-0 right-0 bg-black border-t border-gray-700 flex justify-around py-2 z-50">
+<button class="text-white flex flex-col items-center text-sm" onclick="navigateHome()">
+<svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M3 12l2-2m0 0l7-7 7 7M13 5v6h6v11H5V11h6V5z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+</path>
+</svg>
      Home
     </button>
-    <button class="text-white bg-white text-black px-4 py-2 rounded-full -mt-6 shadow-lg" onclick="scrollToTop()">
+<button class="text-white bg-white text-black px-4 py-2 rounded-full -mt-6 shadow-lg" onclick="scrollToTop()">
      +
     </button>
-    <button class="text-white flex flex-col items-center text-sm" onclick="navigateProfile()">
-     <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path d="M5.121 17.804A13.937 13.937 0 0112 15c2.21 0 4.29.534 6.121 1.474M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-      </path>
-     </svg>
+<button class="text-white flex flex-col items-center text-sm" onclick="navigateProfile()">
+<svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M5.121 17.804A13.937 13.937 0 0112 15c2.21 0 4.29.534 6.121 1.474M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+</path>
+</svg>
      Profile
     </button>
-   </div>
-   <script>
+</div>
+<script>
     function scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -100,13 +92,13 @@
     alert("Profile clicked!");
   }
    </script>
-   <div class="text-green-400 mt-4 text-center" id="txResult">
-   </div>
-   <button class="hidden w-full mt-4 bg-white text-black font-bold py-3 rounded hover:bg-gray-200" id="buyTokenButton" onclick="buyToken()">
+<div class="text-green-400 mt-4 text-center" id="txResult">
+</div>
+<button class="hidden w-full mt-4 bg-white text-black font-bold py-3 rounded hover:bg-gray-200" id="buyTokenButton" onclick="buyToken()">
     Buy Token
    </button>
-  </div>
-  <script>
+</div>
+<script>
    const provider = new ethers.providers.Web3Provider(window.ethereum);
   const signer = provider.getSigner();
   const nexusChain = {
@@ -204,5 +196,5 @@ try {
     }
   }
   </script>
- </body>
+</body>
 </html>
