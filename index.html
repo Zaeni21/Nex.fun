@@ -139,6 +139,7 @@
     isConnected = true;
   }
 
+  window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('walletAddress').addEventListener('click', async () => {
     if (!isConnected) {
       await switchToNexus();
@@ -148,6 +149,7 @@
       popup.classList.toggle('hidden');
     }
   });
+});
 
   function disconnectWallet() {
     isConnected = false;
