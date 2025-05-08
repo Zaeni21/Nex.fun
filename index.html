@@ -54,17 +54,16 @@
 </form>
 <!-- Social Links Section -->
 <div class="mb-4">
-  <label class="block text-white mb-1 font-medium">
+<label class="block text-white mb-1 font-medium">
     + Add social links <span class="text-gray-400 text-sm">(optional)</span>
-    <button type="button" onclick="toggleLinks()" class="ml-2 text-white">+</button>
-  </label>
-  <div id="socialLinks" class="hidden mt-2">
-    <input type="url" id="websiteUrl" placeholder="Website URL" class="w-full p-2 mb-2 bg-gray-800 text-white rounded">
-    <input type="url" id="twitterUrl" placeholder="Twitter URL" class="w-full p-2 mb-2 bg-gray-800 text-white rounded">
-    <input type="url" id="telegramUrl" placeholder="Telegram URL" class="w-full p-2 mb-2 bg-gray-800 text-white rounded">
-  </div>
+<button class="ml-2 text-white" onclick="toggleLinks()" type="button">+</button>
+</label>
+<div class="hidden mt-2" id="socialLinks">
+<input class="w-full p-2 mb-2 bg-gray-800 text-white rounded" id="websiteUrl" placeholder="Website URL" type="url"/>
+<input class="w-full p-2 mb-2 bg-gray-800 text-white rounded" id="twitterUrl" placeholder="Twitter URL" type="url"/>
+<input class="w-full p-2 mb-2 bg-gray-800 text-white rounded" id="telegramUrl" placeholder="Telegram URL" type="url"/>
+</div><button class="w-full bg-white text-black font-bold py-3 rounded hover:bg-gray-200" type="submit">Create Coin</button>
 </div>
-
 <script>
   function toggleLinks() {
     const links = document.getElementById('socialLinks');
@@ -72,7 +71,7 @@
   }
 </script>
     Create Coin
-   </button>
+   
 <!-- Bottom Navigation -->
 <div class="fixed bottom-0 left-0 right-0 bg-black border-t border-gray-700 flex justify-around py-2 z-50">
 <button class="text-white flex flex-col items-center text-sm" onclick="navigateHome()">
@@ -216,6 +215,11 @@ try {
       } else {
         section.style.display = 'none';
       }
+    }
+    </script><script>
+    function toggleLinks() {
+      const section = document.getElementById('socialLinks');
+      section.classList.toggle('hidden');
     }
     </script></body>
 </html>
