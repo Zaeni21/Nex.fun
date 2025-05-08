@@ -10,18 +10,26 @@
   </head>
   <body class="bg-black text-white min-h-screen font-sans">
     <!-- Header -->
-    <div class="flex items-center justify-between px-4 py-4">
+    <div class="flex items-center justify-between px-4 py-4 relative">
       <div class="text-xl font-light tracking-wide">Nex.fun</div>
-      <div id="walletAddress" class="flex items-center space-x-2 bg-gray-900 px-3 py-1 rounded-full cursor-pointer">
-        <div class="w-4 h-4 bg-blue-500 rounded-full"></div>
-        <span class="text-sm">Connect Wallet</span>
+      <div class="relative">
+        <div id="walletAddress" class="flex items-center space-x-2 bg-gray-900 px-3 py-1 rounded-full cursor-pointer">
+          <div class="w-4 h-4 bg-blue-500 rounded-full"></div>
+          <span class="text-sm">Connect Wallet</span>
+        </div>
+        <div id="walletPopup" class="absolute right-0 mt-2 bg-gray-800 border border-gray-600 p-3 rounded hidden z-50">
+          <p class="text-green-400 text-sm mb-2">Connected</p>
+          <button onclick="disconnectWallet()" class="bg-red-600 hover:bg-red-700 px-2 py-1 text-xs rounded">Disconnect</button>
+        </div>
       </div>
     </div>
 
     <!-- Form Section -->
-    <div class="flex flex-col items-center justify-center px-6 pt-20">
-      <p class="text-gray-400 text-sm mb-6 text-center max-w-md">
-        Launch your meme token instantly on-chain. No code, no stress — just fun. Powered by EVM. Built on <span class="text-white font-bold">Nexus Network</span>.
+    <div class="flex flex-col items-center justify-center px-6 pt-16">
+      <p class="text-gray-400 text-sm mb-6 text-center max-w-md leading-relaxed">
+        Launch your meme token instantly on-chain.<br />
+        No code, no stress — just fun.<br />
+        Powered by EVM. Built on <span class="text-white font-bold">Nexus Network</span>.
       </p>
       <form id="deployForm" class="space-y-4 w-full max-w-sm flex flex-col items-center">
         <input type="text" id="tokenName" placeholder="Token Name" class="w-full p-2 rounded bg-gray-800 border border-gray-700" />
@@ -31,7 +39,7 @@
           Deploy Token
         </button>
       </form>
-      <div id="txResult" class="text-green-400 mt-4"></div>
+      <div id="txResult" class="text-green-400 mt-4 text-center"></div>
     </div>
 
     <script>
@@ -43,6 +51,8 @@
         nativeCurrency: { name: 'Nexus', symbol: 'NEX', decimals: 18 },
         blockExplorerUrls: ['https://nexus-new.explorer.caldera.xyz']
       };
+
+      let isConnected = false;
 
       async function switchToNexus() {
         try {
@@ -56,13 +66,30 @@
         await provider.send("eth_requestAccounts", []);
         const signer = provider.getSigner();
         const address = await signer.getAddress();
-        document.getElementById('walletAddress').innerHTML = `<div class="w-4 h-4 bg-blue-500 rounded-full"></div><span class="text-sm">${address.slice(0, 5)}...${address.slice(-3)}</span>`;
+        document.getElementById('walletAddress').innerHTML = `
+          <div class="w-4 h-4 bg-blue-500 rounded-full"></div>
+          <span class="text-sm">${address.slice(0, 5)}...${address.slice(-3)}</span>`;
+        document.getElementById('walletPopup').classList.remove('hidden');
+        isConnected = true;
       }
 
       document.getElementById('walletAddress').addEventListener('click', async () => {
-        await switchToNexus();
-        await connectWallet();
+        if (!isConnected) {
+          await switchToNexus();
+          await connectWallet();
+        } else {
+          const popup = document.getElementById('walletPopup');
+          popup.classList.toggle('hidden');
+        }
       });
+
+      function disconnectWallet() {
+        isConnected = false;
+        document.getElementById('walletPopup').classList.add('hidden');
+        document.getElementById('walletAddress').innerHTML = `
+          <div class="w-4 h-4 bg-blue-500 rounded-full"></div>
+          <span class="text-sm">Connect Wallet</span>`;
+      }
 
       document.getElementById('deployForm').addEventListener('submit', async (e) => {
         e.preventDefault();
