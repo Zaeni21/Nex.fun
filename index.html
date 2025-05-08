@@ -8,6 +8,12 @@
   </title>
   <meta content="Create your meme coin instantly on-chain. Powered by Nexus Network." name="description"/>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+  <script>
+   function toggleSocialInputs() {
+  const section = document.getElementById('optionalSocials');
+  section.classList.toggle('hidden');
+}
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js">
   </script>
  </head>
@@ -44,10 +50,17 @@
     <input class="w-full p-3 rounded bg-gray-800 border border-gray-700" id="tokenName" placeholder="Coin Name" type="text"/>
     <input class="w-full p-3 rounded bg-gray-800 border border-gray-700" id="tokenSymbol" placeholder="Ticker (e.g. DOGE)" type="text"/>
     <textarea class="w-full p-3 rounded bg-gray-800 border border-gray-700" id="tokenDesc" placeholder="Short Description (optional)"></textarea>
-    <button class="w-full bg-white text-black font-bold py-3 rounded hover:bg-gray-200" type="submit">
-     Create Coin
-    </button>
    </form>
+   <button class="text-xs text-gray-400 mt-2 float-right" onclick="toggleSocialInputs()" type="button">
+    ⬇️ optional
+   </button>
+   <div class="mt-2 hidden" id="optionalSocials">
+    <input class="w-full p-2 mb-2 rounded-md bg-gray-800 text-white" id="websiteUrl" placeholder="Website URL" type="url"/>
+    <input class="w-full p-2 mb-2 rounded-md bg-gray-800 text-white" id="twitterUrl" placeholder="Twitter URL" type="url"/>
+   </div>
+   <button class="w-full bg-white text-black font-bold py-3 rounded hover:bg-gray-200" type="submit">
+    Create Coin
+   </button>
    <!-- Social Links -->
    <div class="mt-4 text-left">
     <label class="block text-sm font-medium text-gray-300 mb-1">
