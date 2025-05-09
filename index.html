@@ -130,12 +130,13 @@
     await provider.send("eth_requestAccounts", []);
     const address = await signer.getAddress();
     document.getElementById('walletAddress').innerHTML = `
-      <div class="w-4 h-4 bg-blue-500 rounded-full"></div>
-      <span class="text-sm">${address.slice(0, 5)}...${address.slice(-3)}</span>`;
+  <div class="w-4 h-4 bg-green-500 rounded-full"></div>
+  <span class="text-sm">${address.slice(0, 5)}...${address.slice(-3)}</span>`;
     document.getElementById('walletPopup').classList.remove('hidden');
     isConnected = true;
   }
 
+  window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('walletAddress').addEventListener('click', async () => {
     if (!isConnected) {
       await switchToNexus();
@@ -145,6 +146,7 @@
       popup.classList.toggle('hidden');
     }
   });
+});
 
   function disconnectWallet() {
     isConnected = false;
